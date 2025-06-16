@@ -1,0 +1,313 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title> Annonce </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content responsive-sm class="ion-padding">
+  <ion-row>
+    <ion-col sizeLg="8" sizeMd="8" sizeXs="12">
+      <ion-list lines="none">
+    
+
+
+
+        <ion-item *ngFor="let item of posts" >
+          <ion-avatar slot="start">
+            <img src="{{item.edited_by.user_avatar}}">
+          </ion-avatar>
+          <ion-label>
+            <ion-text>
+              <h2>{{item.edited_by.firstname}}  {{item.edited_by.lastname}}</h2>
+              <h2>{{item.edited_by.city}} </h2>
+              <ion-badge > {{item.edited_by.customer_type}}</ion-badge>
+            </ion-text>
+          </ion-label>
+          
+        </ion-item>
+
+        <ion-row style="display: none;">
+          <ion-col sizeLg="6" sizeMd="6" sizeXs="12" >
+            <select [(ngModel)]="view" >
+              <option value="0"> Brouillon </option>
+              <option value="1"> Publié </option>
+            </select>
+          </ion-col>
+          <ion-col sizeLg="6" sizeMd="6" sizeXs="12" >
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col sizeLg="12" sizeMd="12" sizeXs="12">
+            <ion-item class="roundedInput">
+              <ion-label position="stacked">Titre</ion-label>
+              <ion-input inputmode="text" [(ngModel)]="title" placeholder="Titre"> </ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+ 
+
+        <ion-row style="display: none;">
+          <ion-col sizeLg="12" sizeMd="12" sizeXs="12">
+            <ion-item class="roundedInput">
+              <ion-label position="stacked">Sous titre</ion-label>
+              <ion-input inputmode="text" [(ngModel)]="subtitle" placeholder="Sous titre"> </ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row style="display: none;">
+            <ion-col sizeLg="12" sizeMd="12" sizeXs="12">
+              <ion-item class="roundedInput">
+                <ion-label position="stacked">Ordre</ion-label>
+                <ion-input inputmode="text" [(ngModel)]="order" placeholder="1"> </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+
+          <ion-row>
+            <ion-col sizeLg="6" sizeMd="6" sizeXs="12">
+              <ion-item class="roundedInput">
+                <ion-label position="stacked">Latitude</ion-label>
+                <ion-input inputmode="text" [(ngModel)]="lat" > </ion-input>
+              </ion-item>
+            </ion-col>
+     
+            <ion-col sizeLg="6" sizeMd="6" sizeXs="12">
+              <ion-item class="roundedInput">
+                <ion-label position="stacked">Longitude</ion-label>
+                <ion-input inputmode="text" [(ngModel)]="lng" > </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+
+
+
+      
+        
+      
+          <ion-row >
+            <ion-col sizeLg="6" sizeMd="6" sizeXs="12" >
+          <ion-item lines="full"   class="roundedInput">
+            <ion-label position="floating"> 
+             Adresse  </ion-label>
+            <ion-input  [(ngModel)]="address"  type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+    
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" >
+          <ion-item lines="full"  class="roundedInput">
+            <ion-label position="floating">  
+               CP </ion-label>
+            <ion-input  [(ngModel)]="cp"  type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+        
+         
+      <ion-row >
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" >
+          <ion-item lines="full"   class="roundedInput">
+            <ion-label position="floating">  
+               Ville </ion-label>
+            <ion-input  [(ngModel)]="city"  type="text"></ion-input>
+          </ion-item>
+         
+        </ion-col>
+
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" >
+          <ion-item lines="full"   class="roundedInput">
+            <ion-label position="floating">  
+              Pays </ion-label>
+            <ion-input [(ngModel)]="country"  type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      
+      
+   
+      <ion-row *ngIf="!editcategoryshow">
+        <ion-col sizeLg="4" sizeMd="4" sizeXs="12" > 
+          <ion-item  class="roundedInput" *ngFor="let item of posts">
+            <ion-label position="stacked">Catégories</ion-label>
+           {{item.tags.tag_fr}}
+          </ion-item>
+        </ion-col>
+
+        <ion-col sizeLg="4" sizeMd="4" sizeXs="12" > 
+          <ion-item  class="roundedInput" *ngFor="let item of posts">
+            <ion-label position="stacked">Sous-Catégorie</ion-label>
+            {{item.type.tag_fr}}
+          </ion-item>
+        </ion-col>
+
+        <ion-col sizeLg="4" sizeMd="4" sizeXs="12" > 
+          <ion-button color="primary" expand="full"   (click)="editcategory()" > Modifier  </ion-button>
+        </ion-col>
+      </ion-row>
+
+
+
+
+
+      <ion-row *ngIf="editcategoryshow">
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" > 
+          <ion-item  class="roundedInput">
+            <ion-label position="stacked">Catégories</ion-label>
+            <ion-select multiple="false" okText="Ok" cancelText="Annuler"  [(ngModel)]="category" (ionChange)="categoryChange($event)" >
+              <ion-select-option *ngFor="let item of categories" value="{{item.id}}">{{item.tag_fr}}</ion-select-option >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+   
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" > 
+          <ion-item  class="roundedInput">
+            <ion-label position="stacked"> Sous-catégories</ion-label>
+            <ion-select multiple="false" okText="Ok" cancelText="Annuler"  [(ngModel)]="subcategory" (ionChange)="typeChange($event)" >
+              <ion-select-option *ngFor="let item of subcategories" value="{{item.id}}">{{item.tag_fr}}</ion-select-option >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+
+
+ 
+
+
+      <ion-row>
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" > 
+          <ion-item class="roundedInput">
+            <ion-label position="floating">Choisir le prix en € *</ion-label>
+            <ion-input inputmode="text"[(ngModel)]="price" placeholder="Prix">  </ion-input>
+          </ion-item>
+        </ion-col>
+      
+        <ion-col sizeLg="6" sizeMd="6" sizeXs="12" > 
+          <ion-item class="roundedInput">
+            <ion-label position="floating">Choisir le délai en jour(s) *</ion-label>
+            <ion-input inputmode="text"[(ngModel)]="delay" placeholder="Delai" >  </ion-input>
+          </ion-item>
+        </ion-col>
+       </ion-row>
+
+
+
+
+  
+
+          <ion-row >
+            <ion-col sizeLg="12" sizeMd="12" sizeXs="12" > 
+         
+              <ion-item class="roundedInput" style="display: none;">
+                <div [ngxSummernote]="config" [(ngModel)]="content"></div>
+              </ion-item>
+              <ion-item class="roundedInput">
+                <ion-label  position="stacked"> <b>Contenu</b></ion-label>
+              <ion-textarea label="Regular textarea"   [(ngModel)]="content"></ion-textarea>
+            </ion-item>
+            </ion-col>
+           </ion-row>
+        
+
+
+
+
+
+   
+
+        <ion-item>
+          <div class="item-note" slot="end">
+            <ion-button color="light" size="medium" (click)="doCancel()" >Annuler </ion-button>
+            <ion-button color="secondary" size="medium" (click)="doSave()">Enregistrer</ion-button>
+          </div>
+        </ion-item>
+      </ion-list>
+
+
+ 
+
+
+
+        <ion-row>
+          <ion-col sizeLg="3" sizeMd="3" sizeXs="12" > 
+       
+         
+              <ion-row>
+      
+              <ion-button color="primary" expand="full" shape="round"  (click)="addFormGallery()" >  Ajouter une image principale  <ion-icon name="image-outline"></ion-icon></ion-button>
+    
+              </ion-row>
+
+              <ion-row>
+              <img src="{{image}}"   *ngIf="image">
+              </ion-row>
+            
+          </ion-col>
+
+
+          <ion-col sizeLg="3" sizeMd="3" sizeXs="12" > 
+           
+         
+              <ion-row>
+       
+              <ion-button color="primary" expand="full" shape="round"  (click)="addFormGallery2()" > Ajouter une image <ion-icon name="image-outline"></ion-icon></ion-button>
+          
+              </ion-row>
+
+              <ion-row>
+              <img src="{{image2}}"   *ngIf="image">
+              </ion-row>
+            
+          </ion-col>
+
+          <ion-col sizeLg="3" sizeMd="3" sizeXs="12" > 
+         
+         
+              <ion-row>
+             
+              <ion-button color="primary" expand="full" shape="round"  (click)="addFormGallery3()" > Ajouter une image  <ion-icon name="image-outline"></ion-icon></ion-button>
+            
+              </ion-row>
+
+              <ion-row>
+              <img src="{{image3}}"   *ngIf="image">
+              </ion-row>
+            
+          </ion-col>
+
+          <ion-col sizeLg="3" sizeMd="3" sizeXs="12" > 
+           
+         
+              <ion-row>
+              <ion-button color="primary" expand="full" shape="round"  (click)="addFormGallery4()" >  Ajouter une image <ion-icon name="image-outline"></ion-icon></ion-button>
+             </ion-row>
+
+              <ion-row>
+              <img src="{{image4}}"   *ngIf="image">
+              </ion-row>
+            
+          </ion-col>
+         
+         </ion-row>
+
+
+
+
+
+
+
+    </ion-col>
+    <ion-col sizeLg="4" sizeMd="4" sizeXs="12" class="padding">
+    </ion-col>
+  </ion-row>
+</ion-content>
